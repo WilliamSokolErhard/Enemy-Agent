@@ -9572,7 +9572,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 325c9a5d3ca098b46aca02f0aaa0cd6b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.51
+      value: 8.03
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 325c9a5d3ca098b46aca02f0aaa0cd6b,
         type: 3}
@@ -9582,7 +9582,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 325c9a5d3ca098b46aca02f0aaa0cd6b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.63
+      value: 1.35
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 325c9a5d3ca098b46aca02f0aaa0cd6b,
         type: 3}
@@ -9685,6 +9685,7 @@ MonoBehaviour:
   waypointsParent: {fileID: 1748237092}
   rotationSpeed: 120
   loop: 0
+  health: 1
 --- !u!143 &1921245587
 CharacterController:
   m_ObjectHideFlags: 0

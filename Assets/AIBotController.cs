@@ -34,6 +34,9 @@ public class AIBotController : MonoBehaviour
 
     private Vector3 moveDirection = Vector3.zero;
 
+
+    public float health = 1f;
+
     void OnDrawGizmos()
     {
         // Draw a green sphere at the transform's position
@@ -64,6 +67,19 @@ public class AIBotController : MonoBehaviour
         go.GetComponent<Rigidbody>().AddForce((ClosestEnemy().position - transform.position + transform.forward + transform.up - transform.right / 6) * 2, ForceMode.Impulse);
     }
 
+    public void ShotTaken(float damage)
+    {
+        health -= damage;
+        if(health <= 0f)
+        {
+            animator.SetTrigger("Death");
+        }
+    }
+    public void HitPlayer()
+    {
+        //TODO Damage Player
+    }
+
     float timer = -1.8f;
     void Update()
     {
@@ -71,6 +87,7 @@ public class AIBotController : MonoBehaviour
         switch (agentState)
         {
             case AgentState.Idle:
+                ShotTaken(1);
                 break;
             case AgentState.Patrol:
                 if (Vector3.Distance(waypointTargetTransform.position, new Vector3(transform.position.x, waypointTargetTransform.position.y, transform.position.z)) < 0.66f)
