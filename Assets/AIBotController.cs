@@ -20,6 +20,7 @@ public class AIBotController : MonoBehaviour
     public float jumpSpeed = 8.0f;
     public float gravity = 9.8f;
 
+    public GameObject projectilePrefab;
     public List<Transform> enemies = new List<Transform>();
     //private Transform enemyTarget;
     public Transform waypointsParent;
@@ -35,7 +36,7 @@ public class AIBotController : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        // Draw a yellow sphere at the transform's position
+        // Draw a green sphere at the transform's position
         Gizmos.color = new Color(0,1,0,0.2f);
         foreach(Transform waypoint in waypointsParent)
         {
@@ -53,6 +54,14 @@ public class AIBotController : MonoBehaviour
     private Transform ClosestEnemy()
     {
         return enemies[0]; //TODO
+    }
+
+    IEnumerator throwBall()
+    {
+        yield return new WaitForSeconds(0.75f);
+        GameObject go = Instantiate(projectilePrefab);
+        go.transform.position = transform.position + transform.up * 1.5f + transform.right / 2;
+        go.GetComponent<Rigidbody>().AddForce((ClosestEnemy().position - transform.position + transform.forward + transform.up - transform.right / 6) * 2, ForceMode.Impulse);
     }
 
     float timer = -1.8f;
@@ -92,7 +101,12 @@ public class AIBotController : MonoBehaviour
                 animator.SetTrigger("EngageEnemy");
                 if (Vector3.Distance(transform.position, ClosestEnemy().position)<10f) { 
                     target = new Vector3(ClosestEnemy().position.x, transform.position.y, ClosestEnemy().position.z) - transform.position;
-                    animator.SetTrigger("AttackEnemy"); 
+                    if (timer + 3f <= Time.time)
+                    {
+                        timer = Time.time;
+                        animator.SetTrigger("AttackEnemy");
+                        StartCoroutine(throwBall());
+                    }
                 }
                 break;
             case AgentState.Cover:
@@ -100,7 +114,7 @@ public class AIBotController : MonoBehaviour
                 break;            
         }
 
-        if (timer + 2f <= Time.time)
+        if (timer + 2f <= Time.time || agentState == AgentState.Attack)
         {
             var step = rotationSpeed * Time.deltaTime;
             RaycastHit RH;
