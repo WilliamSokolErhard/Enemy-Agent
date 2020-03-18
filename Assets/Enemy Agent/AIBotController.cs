@@ -156,8 +156,7 @@ public class AIBotController : MonoBehaviour
                     if (enemy == null)
                     {
                         enemies.Remove(enemy);
-                    }
-                    if (Vector3.Angle(enemy.position-transform.position,transform.forward)<90f)
+                    }else if (Vector3.Angle(enemy.position-transform.position,transform.forward)<90f)
                     {
                         RaycastHit RHE;                        
                         Ray view = new Ray(transform.position + Vector3.up * 1.7F, enemy.position - transform.position+Vector3.down*0.25f);
