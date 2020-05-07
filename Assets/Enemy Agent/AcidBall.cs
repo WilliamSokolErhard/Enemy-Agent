@@ -5,6 +5,7 @@ using UnityEngine;
 public class AcidBall : MonoBehaviour
 {
     public AIBotController aIBotController;
+    private bool hit = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,9 @@ public class AcidBall : MonoBehaviour
     {
         foreach (ContactPoint contact in collision.contacts)
         {
-            aIBotController.HitPlayer(contact.otherCollider.transform);
+            if(!hit)
+                hit = aIBotController.HitPlayer(contact.otherCollider.transform);
+
             Debug.DrawRay(contact.point, contact.normal, Color.white);
             StartCoroutine(Explode());
         }

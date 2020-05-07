@@ -91,26 +91,33 @@ public class AIBotController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         go.GetComponent<SphereCollider>().enabled = true;
     }
-    public void HitPlayer(Transform player)
+    public bool HitPlayer(Transform player)
     {
         if (player.GetComponent<AIBotController>() != null)
-        {
+        {            
             player.GetComponent<AIBotController>().ShotTaken(1f);
+            return true;
         }
+        return false;
         //TODO Damage Player
     }
 
     public void ShotTaken(float damage)
     {
-        health -= damage;
-        if(health <= 0f)
+        if (health >= 0f)
         {
-            animator.SetTrigger("Death");
-            StartCoroutine(Death());
+            health -= damage;
+            if (health <= 0f && animator != null)
+            {
+                if (Scoreboard.instance != null)
+                    Scoreboard.instance.deathCounted();
+                animator.SetTrigger("Death");
+                StartCoroutine(Death());
+            }
         }
     }
     IEnumerator Death()
-    {
+    {        
         yield return new WaitForSeconds(4f);
         Destroy(gameObject);
     }
